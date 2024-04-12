@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     marginTop: 100,
     marginHorizontal: 24,
     borderRadius: 8,
-    backgroundColor: '#8c2c5b',
+    backgroundColor: '#3b021f',
     elevation: 4, //for Android only
     shadowColor: '#8C2C5BFF',
     shadowOffset: {width: 0, height: 2},
