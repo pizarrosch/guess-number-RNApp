@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowRadius: 8,
     shadowOpacity: 1,
-    alignItems: 'center'
+    // alignItems: 'center'
   },
   input: {
     height: 50,
