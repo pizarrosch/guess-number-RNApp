@@ -13,7 +13,6 @@ export default function GameScreen(props) {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 100,
-    marginHorizontal: 20
+    padding: 24
   }
 })
