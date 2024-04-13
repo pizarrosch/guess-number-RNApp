@@ -2,7 +2,7 @@ import {TextInput, View, StyleSheet, Alert} from "react-native";
 import PrimaryButton from "../components/PrimaryButton";
 import {useState} from "react";
 
-export default function StartGameScreen() {
+export default function StartGameScreen(props) {
 
   const [enteredNumber, setEnteredNumber] = useState('');
 
@@ -20,6 +20,7 @@ export default function StartGameScreen() {
         [{text: 'Understood', style: 'destructive', onPress: resetInput}]
       )
     } else {
+      props.onConfirm(enteredNumber);
       resetInput();
     }
   }
