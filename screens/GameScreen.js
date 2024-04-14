@@ -1,6 +1,6 @@
-import {Button, Text, View, StyleSheet} from "react-native";
+import {Button, Text, View, StyleSheet, Alert} from "react-native";
 import Title from "../components/ui/Title";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
 
@@ -18,10 +18,19 @@ let minBoundary = 1;
 let maxBoundary = 100;
 
 export default function GameScreen(props) {
-  const initialNumber = generateRandomBetween(minBoundary, maxBoundary, props.pickedNumber);
+  const initialNumber = generateRandomBetween(1, 100, props.pickedNumber);
   const [generatedNumber, setGeneratedNumber] = useState(initialNumber);
 
   function nextGuessHandler(direction) {
+    if (
+      direction === 'lower' && generatedNumber < props.pickedNumber ||
+      direction === 'greater' && generatedNumber > props.pickedNumber) {
+      Alert.alert('You are lying!', 'Your hint does not correlate with the true number', [{
+        text: 'Okay', style: 'destructive'
+      }]);
+      return;
+    }
+
     if (direction === 'lower') {
       maxBoundary = generatedNumber;
     } else {
@@ -30,6 +39,12 @@ export default function GameScreen(props) {
     const newGeneratedNumber = generateRandomBetween(minBoundary, maxBoundary, generatedNumber);
     setGeneratedNumber(newGeneratedNumber);
   }
+
+  useEffect(() => {
+    if (generatedNumber === props.pickedNumber) {
+      props.onGameOver();
+    }
+  }, [generatedNumber, props.pickedNumber, props.onGameOver]);
 
   return (
     <View style={styles.container}>
@@ -46,9 +61,6 @@ export default function GameScreen(props) {
           </View>
         </View>
       </View>
-      <Text>
-        {props.pickedNumber}
-      </Text>
       <Button title='Back' onPress={props.return}/>
     </View>
   )
