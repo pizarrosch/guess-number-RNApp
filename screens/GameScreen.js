@@ -17,16 +17,16 @@ function generateRandomBetween(min, max, exclude) {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-export default function GameScreen(props) {
-  const initialNumber = generateRandomBetween(1, 100, props.pickedNumber);
+export default function GameScreen({pickedNumber, onGameOver}) {
+  const initialNumber = generateRandomBetween(1, 100, pickedNumber);
   const [generatedNumber, setGeneratedNumber] = useState(initialNumber);
 
   function nextGuessHandler(direction) {
     if (
-      direction === 'lower' && generatedNumber < props.pickedNumber ||
-      direction === 'greater' && generatedNumber > props.pickedNumber) {
+      direction === 'lower' && generatedNumber < pickedNumber ||
+      direction === 'greater' && generatedNumber > pickedNumber) {
       Alert.alert('You are lying!', 'Your hint does not correlate with the true number', [{
-        text: 'Okay', style: 'destructive'
+        text: 'Sorry', style: 'destructive'
       }]);
       return;
     }
@@ -41,10 +41,11 @@ export default function GameScreen(props) {
   }
 
   useEffect(() => {
-    if (generatedNumber === props.pickedNumber) {
-      props.onGameOver();
+    if (pickedNumber.toString() === generatedNumber.toString()) {
+      console.log(`That's right!'`)
+      onGameOver();
     }
-  }, [generatedNumber, props.pickedNumber, props.onGameOver]);
+  }, [generatedNumber, pickedNumber, onGameOver]);
 
   return (
     <View style={styles.container}>
@@ -61,7 +62,6 @@ export default function GameScreen(props) {
           </View>
         </View>
       </View>
-      <Button title='Back' onPress={props.return}/>
     </View>
   )
 }

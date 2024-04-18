@@ -4,7 +4,7 @@ import {LinearGradient} from "expo-linear-gradient";
 import {useState} from "react";
 import GameScreen from "./screens/GameScreen";
 import Colors from "./constants/Colors";
-import GameOver from "./screens/GameOverScreen";
+import GameOverScreen from "./screens/GameOverScreen";
 
 export default function App() {
 
@@ -28,14 +28,13 @@ export default function App() {
 
   if (confirmedNumber) {
     screen = <GameScreen
-      return={returnToTheStartPage}
       pickedNumber={confirmedNumber}
       onGameOver={gameOverHandler}
     />
   }
 
   if (gameIsOver && confirmedNumber) {
-    screen = <GameOver />
+    screen = <GameOverScreen />
   }
 
   return (
