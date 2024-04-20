@@ -1,8 +1,11 @@
-import {Button, Text, View, StyleSheet, Alert} from "react-native";
+import {View, StyleSheet, Alert} from "react-native";
 import Title from "../components/ui/Title";
 import {useEffect, useState} from "react";
 import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
+import Card from "../components/ui/Card";
+import Colors from "../constants/Colors";
+import InstructionText from "../components/ui/InstructionText";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -48,19 +51,21 @@ export default function GameScreen({pickedNumber, onGameOver}) {
   }, [generatedNumber, pickedNumber, onGameOver]);
 
   return (
-    <View style={styles.container}>
+    <View>
       <Title>Opponent's guess</Title>
       <NumberContainer>{generatedNumber}</NumberContainer>
       <View>
-        <Text>Higher or lower?</Text>
-        <View style={styles.changeButtonsContainer}>
-          <View style={styles.plusMinusContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
+        <Card>
+        <InstructionText>Higher or lower?</InstructionText>
+          <View style={styles.changeButtonsContainer}>
+            <View style={styles.plusMinusContainer}>
+              <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
+            </View>
+            <View style={styles.plusMinusContainer}>
+              <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
+            </View>
           </View>
-          <View style={styles.plusMinusContainer}>
-            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
-          </View>
-        </View>
+        </Card>
       </View>
     </View>
   )
@@ -68,11 +73,11 @@ export default function GameScreen({pickedNumber, onGameOver}) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    alignItems: 'stretch',
     padding: 24
   },
   changeButtonsContainer: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   plusMinusContainer: {
     flex: 1,
