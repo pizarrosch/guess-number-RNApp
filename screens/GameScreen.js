@@ -7,6 +7,7 @@ import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
 import {Ionicons} from "@expo/vector-icons";
 import Colors from "../constants/Colors";
+import GuessLogItem from "../components/game/GuessLogItem";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -57,35 +58,40 @@ export default function GameScreen({pickedNumber, onGameOver}) {
     maxBoundary = 100;
   }, []);
 
+  const guessedListItemsLength = guessRounds.length;
+
   return (
     <View style={styles.rootContainer}>
       <Title>Opponent's guess</Title>
       <NumberContainer>{generatedNumber}</NumberContainer>
-      <View>
-        <Card>
-          <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
-          <View style={styles.changeButtonsContainer}>
-            <View style={styles.plusMinusContainer}>
-              <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
-                <Ionicons name="remove-sharp" size={24} color="#ABB3BF"/>
-              </PrimaryButton>
-            </View>
-            <View style={styles.plusMinusContainer}>
-              <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
-                <Ionicons name="add-sharp" size={24} color="#ABB3BF"/>
-              </PrimaryButton>
-            </View>
+      <Card>
+        <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
+        <View style={styles.changeButtonsContainer}>
+          <View style={styles.plusMinusContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Ionicons name="remove-sharp" size={24} color="#ABB3BF"/>
+            </PrimaryButton>
           </View>
-        </Card>
-      </View>
+          <View style={styles.plusMinusContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+              <Ionicons name="add-sharp" size={24} color="#ABB3BF"/>
+            </PrimaryButton>
+          </View>
+        </View>
+      </Card>
 
       {/*One method would be using map() function for not too long lists*/}
-
-      <FlatList
-        data={guessRounds}
-        renderItem={(itemData) => <Text>{(itemData.item)}</Text>}
-        keyExtractor={(item) => item}
-      />
+      <View style={styles.listContainer}>
+        <FlatList
+          scrollEnabled={true}
+          data={guessRounds}
+          renderItem={(itemData) => <GuessLogItem
+            guessValue={itemData.item}
+            roundNumber={guessedListItemsLength - itemData.index}
+          />}
+          keyExtractor={(item) => item}
+        />
+      </View>
     </View>
   )
 }
@@ -93,7 +99,8 @@ export default function GameScreen({pickedNumber, onGameOver}) {
 const styles = StyleSheet.create({
   rootContainer: {
     alignItems: 'stretch',
-    padding: 24
+    padding: 24,
+    flex: 1
   },
   instructionText: {
     marginBottom: 15
@@ -107,5 +114,9 @@ const styles = StyleSheet.create({
   guessedNumbersContainer: {
     fontFamily: 'open-sans',
     color: Colors.primaryTextAndBorders
+  },
+  listContainer: {
+    flex: 1,
+    padding: 16
   }
 })
