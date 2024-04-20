@@ -56,7 +56,7 @@ export default function GameScreen({pickedNumber, onGameOver}) {
       <NumberContainer>{generatedNumber}</NumberContainer>
       <View>
         <Card>
-        <InstructionText>Higher or lower?</InstructionText>
+        <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
           <View style={styles.changeButtonsContainer}>
             <View style={styles.plusMinusContainer}>
               <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
@@ -75,6 +75,9 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'stretch',
     padding: 24
+  },
+  instructionText: {
+    marginBottom: 15
   },
   changeButtonsContainer: {
     flexDirection: 'row',
