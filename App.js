@@ -33,8 +33,9 @@ export default function App() {
     setGuessAttempts(0);
   }
 
-  function gameOverHandler() {
+  function gameOverHandler(attemptsNumber) {
     setGameIsOver(true);
+    setGuessAttempts(attemptsNumber);
   }
 
   let screen = <StartGameScreen onConfirm={startGame}/>

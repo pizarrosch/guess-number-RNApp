@@ -49,7 +49,7 @@ export default function GameScreen({pickedNumber, onGameOver}) {
 
   useEffect(() => {
     if (pickedNumber.toString() === generatedNumber.toString()) {
-      onGameOver();
+      onGameOver(guessRounds.length);
     }
   }, [generatedNumber, pickedNumber, onGameOver]);
 
