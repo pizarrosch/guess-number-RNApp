@@ -1,4 +1,4 @@
-import {View, StyleSheet, Alert} from "react-native";
+import {View, StyleSheet, Alert, Text, SafeAreaView, FlatList} from "react-native";
 import Title from "../components/ui/Title";
 import {useEffect, useState} from "react";
 import NumberContainer from "../components/game/NumberContainer";
@@ -6,6 +6,7 @@ import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card";
 import InstructionText from "../components/ui/InstructionText";
 import {Ionicons} from "@expo/vector-icons";
+import Colors from "../constants/Colors";
 
 function generateRandomBetween(min, max, exclude) {
   const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -23,6 +24,7 @@ let maxBoundary = 100;
 export default function GameScreen({pickedNumber, onGameOver}) {
   const initialNumber = generateRandomBetween(1, 100, pickedNumber);
   const [generatedNumber, setGeneratedNumber] = useState(initialNumber);
+  const [guessRounds, setGuessRounds] = useState([initialNumber]);
 
   function nextGuessHandler(direction) {
     if (
@@ -41,6 +43,7 @@ export default function GameScreen({pickedNumber, onGameOver}) {
     }
     const newGeneratedNumber = generateRandomBetween(minBoundary, maxBoundary, generatedNumber);
     setGeneratedNumber(newGeneratedNumber);
+    setGuessRounds(prevGuess => [newGeneratedNumber, ...prevGuess]);
   }
 
   useEffect(() => {
@@ -60,21 +63,29 @@ export default function GameScreen({pickedNumber, onGameOver}) {
       <NumberContainer>{generatedNumber}</NumberContainer>
       <View>
         <Card>
-        <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
+          <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
           <View style={styles.changeButtonsContainer}>
             <View style={styles.plusMinusContainer}>
               <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
-                <Ionicons name="remove-sharp" size={24} color="#ABB3BF" />
+                <Ionicons name="remove-sharp" size={24} color="#ABB3BF"/>
               </PrimaryButton>
             </View>
             <View style={styles.plusMinusContainer}>
               <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
-                <Ionicons name="add-sharp" size={24} color="#ABB3BF" />
+                <Ionicons name="add-sharp" size={24} color="#ABB3BF"/>
               </PrimaryButton>
             </View>
           </View>
         </Card>
       </View>
+
+      {/*One method would be using map() function for not too long lists*/}
+
+      <FlatList
+        data={guessRounds}
+        renderItem={(itemData) => <Text>{(itemData.item)}</Text>}
+        keyExtractor={(item) => item}
+      />
     </View>
   )
 }
@@ -92,5 +103,9 @@ const styles = StyleSheet.create({
   },
   plusMinusContainer: {
     flex: 1,
+  },
+  guessedNumbersContainer: {
+    fontFamily: 'open-sans',
+    color: Colors.primaryTextAndBorders
   }
 })
