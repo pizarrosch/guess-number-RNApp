@@ -45,10 +45,14 @@ export default function GameScreen({pickedNumber, onGameOver}) {
 
   useEffect(() => {
     if (pickedNumber.toString() === generatedNumber.toString()) {
-      console.log(`That's right!'`)
       onGameOver();
     }
   }, [generatedNumber, pickedNumber, onGameOver]);
+
+  useEffect(() => {
+    minBoundary = 1;
+    maxBoundary = 100;
+  }, []);
 
   return (
     <View style={styles.rootContainer}>

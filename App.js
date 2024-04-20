@@ -12,6 +12,7 @@ export default function App() {
 
   const [confirmedNumber, setConfirmedNumber] = useState();
   const [gameIsOver, setGameIsOver] = useState(true);
+  const [guessAttempts, setGuessAttempts] = useState(0);
 
   const [fontsLoaded] = useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -19,7 +20,7 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-   return <AppLoading />
+    return <AppLoading/>
   }
 
   function startGame(enteredNumber) {
@@ -27,8 +28,9 @@ export default function App() {
     setGameIsOver(false);
   }
 
-  function returnToTheStartPage() {
+  function onGameRestart() {
     setConfirmedNumber(null);
+    setGuessAttempts(0);
   }
 
   function gameOverHandler() {
@@ -45,7 +47,8 @@ export default function App() {
   }
 
   if (gameIsOver && confirmedNumber) {
-    screen = <GameOverScreen />
+    screen =
+      <GameOverScreen onGameRestart={onGameRestart} pickedNumber={confirmedNumber} attemptNumber={guessAttempts}/>
   }
 
   return (
