@@ -1,4 +1,12 @@
-import {TextInput, View, StyleSheet, Alert, useWindowDimensions} from "react-native";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  Alert,
+  useWindowDimensions,
+  KeyboardAvoidingView,
+  ScrollView
+} from "react-native";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import {useState} from "react";
 import Colors from "../constants/Colors";
@@ -35,34 +43,41 @@ export default function StartGameScreen(props) {
     setEnteredNumber('');
   }
 
-  const marginTopValue = height < 400 ? 30 :100;
+  const marginTopValue = height < 400 ? 30 : 100;
 
   return (
-    <View style={[styles.mainContainer, {marginTop: marginTopValue}]}>
-      <Title>Guess My Number</Title>
-      <Card>
-        <InstructionText>Enter your number</InstructionText>
-        <TextInput
-          style={styles.input}
-          maxLength={2}
-          keyboardType='number-pad'
-          value={enteredNumber}
-          onChangeText={newNumber => handleInput(newNumber)}/>
-        <View style={styles.buttonsContainer}>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={resetInput}>Reset</PrimaryButton>
-          </View>
-          <View style={styles.buttonContainer}>
-            <PrimaryButton onPress={confirmNumber}>Confirm</PrimaryButton>
-          </View>
+    <ScrollView style={styles.root}>
+      <KeyboardAvoidingView style={styles.root} behavior='position'>
+        <View style={[styles.mainContainer, {marginTop: marginTopValue}]}>
+          <Title>Guess My Number</Title>
+          <Card>
+            <InstructionText>Enter your number</InstructionText>
+            <TextInput
+              style={styles.input}
+              maxLength={2}
+              keyboardType='number-pad'
+              value={enteredNumber}
+              onChangeText={newNumber => handleInput(newNumber)}/>
+            <View style={styles.buttonsContainer}>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={resetInput}>Reset</PrimaryButton>
+              </View>
+              <View style={styles.buttonContainer}>
+                <PrimaryButton onPress={confirmNumber}>Confirm</PrimaryButton>
+              </View>
+            </View>
+          </Card>
         </View>
-      </Card>
-    </View>
+      </KeyboardAvoidingView>
+    </ScrollView>
   )
 }
 
 
 const styles = StyleSheet.create({
+  root: {
+    flex: 1
+  },
   mainContainer: {
     marginTop: 100,
     flex: 1,
