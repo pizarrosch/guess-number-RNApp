@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TextInput, View} from "react-native";
+import {StyleSheet, Text, TextInput, View, Dimensions} from "react-native";
 import PrimaryButton from "./PrimaryButton";
 import Colors from "../../constants/Colors";
 
@@ -8,10 +8,12 @@ export default function Card({children}) {
   )
 }
 
+const deviceWidth = Dimensions.get('window').width;
+
 const styles = StyleSheet.create({
   card: {
     padding: 16,
-    marginTop: 40,
+    marginTop: deviceWidth < 380 ? 30 : 40,
     marginHorizontal: 24,
     borderRadius: 8,
     backgroundColor: Colors.violet1,
