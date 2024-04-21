@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     margin: deviceWidth < 380 ? 12 : 24,
     borderRadius: 8,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   numberText: {
     color: Colors.primaryTextAndBorders,
