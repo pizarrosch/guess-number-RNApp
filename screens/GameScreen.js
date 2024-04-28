@@ -1,4 +1,4 @@
-import {View, StyleSheet, Alert, Text, SafeAreaView, FlatList} from "react-native";
+import {View, StyleSheet, Alert, FlatList, useWindowDimensions} from "react-native";
 import Title from "../components/ui/Title";
 import {useEffect, useState} from "react";
 import NumberContainer from "../components/game/NumberContainer";
@@ -26,6 +26,8 @@ export default function GameScreen({pickedNumber, onGameOver}) {
   const initialNumber = generateRandomBetween(1, 100, pickedNumber);
   const [generatedNumber, setGeneratedNumber] = useState(initialNumber);
   const [guessRounds, setGuessRounds] = useState([initialNumber]);
+
+  const {width, height} = useWindowDimensions();
 
   function nextGuessHandler(direction) {
     if (
@@ -60,9 +62,8 @@ export default function GameScreen({pickedNumber, onGameOver}) {
 
   const guessedListItemsLength = guessRounds.length;
 
-  return (
-    <View style={styles.rootContainer}>
-      <Title>Opponent's guess</Title>
+  let content = (
+    <>
       <NumberContainer>{generatedNumber}</NumberContainer>
       <Card>
         <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
@@ -79,7 +80,33 @@ export default function GameScreen({pickedNumber, onGameOver}) {
           </View>
         </View>
       </Card>
+    </>
+  );
 
+  if (width > 500) {
+    content = (
+      <>
+        <View style={styles.buttonsContainerWide}>
+          <View style={styles.plusMinusContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+              <Ionicons name="remove-sharp" size={24} color="#ABB3BF"/>
+            </PrimaryButton>
+          </View>
+          <NumberContainer>{generatedNumber}</NumberContainer>
+          <View style={styles.plusMinusContainer}>
+            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+              <Ionicons name="add-sharp" size={24} color="#ABB3BF"/>
+            </PrimaryButton>
+          </View>
+        </View>
+      </>
+    );
+  }
+
+  return (
+    <View style={styles.rootContainer}>
+      <Title>Opponent's guess</Title>
+      {content}
       {/*One method would be using map() function for not too long lists*/}
       <View style={styles.listContainer}>
         <FlatList
@@ -107,6 +134,10 @@ const styles = StyleSheet.create({
   },
   changeButtonsContainer: {
     flexDirection: 'row',
+  },
+  buttonsContainerWide: {
+    flexDirection: 'row',
+    alignItems: 'center'
   },
   plusMinusContainer: {
     flex: 1,
